@@ -16,14 +16,14 @@ export default function LoginPage() {
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="w-full max-w-md flex flex-col items-center relative z-10"
       >
-        <div className="text-center mb-8">
+        {/* <div className="text-center mb-8">
           <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
             DevSuite Hub
           </h1>
           <p className="text-sm text-slate-600 mt-2 font-medium">
             One account. Access all your development workspaces.
           </p>
-        </div>
+        </div> */}
 
         <SignIn
           path="/auth/login"
