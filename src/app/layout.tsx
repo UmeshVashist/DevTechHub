@@ -27,7 +27,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider afterSignOutUrl="/auth/login">
+    <ClerkProvider
+      afterSignOutUrl="/auth/login"
+      allowedRedirectOrigins={[
+        "https://devboard.cashms.in",
+        "https://devstore.cashms.in",
+        "https://devpass.cashms.in",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://localhost:3003",
+      ]}
+    >
       <html
         lang="en"
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}

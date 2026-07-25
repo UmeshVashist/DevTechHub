@@ -1,6 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
-import { LayoutGrid, Database, ArrowRight, Layers } from "lucide-react";
+import { LayoutGrid, Database, ArrowRight, Layers, Key } from "lucide-react";
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -8,6 +8,7 @@ export default async function DashboardPage() {
 
   const devboardUrl = process.env.NEXT_PUBLIC_DEVBOARD_URL || "http://localhost:3001";
   const devstoreUrl = process.env.NEXT_PUBLIC_DEVSTORE_URL || "http://localhost:3002";
+  const devpassUrl = process.env.NEXT_PUBLIC_DEVPASS_URL || "http://localhost:3003";
 
   return (
     <main className="relative min-h-screen w-full flex flex-col bg-[#FAEBD7] text-slate-800 overflow-hidden px-6 py-10 md:px-16">
@@ -54,7 +55,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* App cards grid */}
-        <div className="grid md:grid-cols-2 gap-10 pt-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 pt-4">
           {/* Card 1: DevBoard */}
           <a
             href={devboardUrl}
@@ -139,6 +140,51 @@ export default async function DashboardPage() {
               <div className="pt-4">
                 <div className="inline-flex items-center gap-2 text-orange-600 text-sm font-extrabold bg-[#FAEBD7] border border-[#f5e3cc] px-6 py-3 rounded-2xl shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff] group-hover:shadow-[inset_2px_2px_5px_#d9cbba,_inset_-2px_-2px_5px_#ffffff] transition-all duration-300">
                   Launch DevStore
+                  <ArrowRight className="w-4 h-4 text-orange-500 transition-transform group-hover:translate-x-1" />
+                </div>
+              </div>
+            </div>
+          </a>
+
+          {/* Card 3: DevPass */}
+          <a
+            href={devpassUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative rounded-[36px] border border-[#f5e3cc] bg-[#FAEBD7] p-8 md:p-10 shadow-[10px_10px_20px_#d9cbba,_-10px_-10px_20px_#ffffff] transition-all duration-500 hover:-translate-y-2 hover:shadow-[14px_14px_28px_#d9cbba,_-14px_-14px_28px_#ffffff] hover:border-orange-400/40 overflow-hidden"
+          >
+            <div className="relative space-y-6">
+              {/* Recessed Icon Holder */}
+              <div className="w-16 h-16 rounded-2xl bg-[#FAEBD7] shadow-[inset_3px_3px_6px_#d9cbba,_inset_-3px_-3px_6px_#ffffff] border border-[#f5e3cc]/50 flex items-center justify-center text-orange-600 group-hover:scale-105 transition-all duration-300">
+                <Key className="w-8 h-8" />
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-slate-800 group-hover:text-orange-600 transition-colors duration-300">
+                  DevPass
+                </h3>
+                <p className="text-slate-600 leading-relaxed text-sm font-medium">
+                  Secure Glassmorphic Password Manager. Encrypt and manage passwords locally with AES-256 and store them securely in your Google Sheets database.
+                </p>
+              </div>
+
+              {/* Tag / Badge list (Recessed Soft Pills) */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
+                  AES-256
+                </span>
+                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
+                  Google Sheets
+                </span>
+                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
+                  Zero-Knowledge
+                </span>
+              </div>
+
+              {/* Neomorphic Button styled to bg-[#FAEBD7] */}
+              <div className="pt-4">
+                <div className="inline-flex items-center gap-2 text-orange-600 text-sm font-extrabold bg-[#FAEBD7] border border-[#f5e3cc] px-6 py-3 rounded-2xl shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff] group-hover:shadow-[inset_2px_2px_5px_#d9cbba,_inset_-2px_-2px_5px_#ffffff] transition-all duration-300">
+                  Launch DevPass
                   <ArrowRight className="w-4 h-4 text-orange-500 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
