@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
-import { LayoutGrid, Database, ArrowRight, Layers, Key } from "lucide-react";
+import { Layers } from "lucide-react";
+import { AppLauncher } from "@/components/AppLauncher";
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -12,11 +13,9 @@ export default async function DashboardPage() {
 
   return (
     <main className="relative min-h-screen w-full flex flex-col bg-[#FAEBD7] text-slate-800 overflow-hidden px-6 py-10 md:px-16">
-      {/* Subtle warm ambient glowing elements */}
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-orange-200/25 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-amber-200/25 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Header bar */}
       <header className="w-full flex items-center justify-between z-10 border-b border-[#f3dfc6]/80 pb-6 mb-12">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl bg-[#FAEBD7] border border-[#f5e3cc] flex items-center justify-center shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff]">
@@ -29,7 +28,6 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* User Actions (Neomorphic Capsule) */}
         <div className="flex items-center gap-4 bg-[#FAEBD7] border border-[#f5e3cc] rounded-full px-5 py-2.5 shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff]">
           <span className="text-sm font-semibold text-slate-700">
             {firstName}
@@ -40,7 +38,6 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      {/* Main dashboard content */}
       <div className="max-w-6xl w-full mx-auto flex-1 flex flex-col justify-center z-10 space-y-12">
         <div className="space-y-4">
           <h2 className="text-sm uppercase tracking-[0.25em] text-orange-600 font-extrabold">
@@ -50,152 +47,19 @@ export default async function DashboardPage() {
             Welcome to <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">DevSuite Workspace</span>
           </h1>
           <p className="text-slate-600 max-w-2xl text-lg font-medium leading-relaxed">
-            Access your unified development tools and databases. Select an environment below to jump directly into your work without logging in again.
+            Access your unified development tools and databases. Select an environment below to jump directly into your work without logging in again — single sign-on handles it seamlessly.
           </p>
         </div>
 
-        {/* App cards grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 pt-4">
-          {/* Card 1: DevBoard */}
-          <a
-            href={devboardUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative rounded-[36px] border border-[#f5e3cc] bg-[#FAEBD7] p-8 md:p-10 shadow-[10px_10px_20px_#d9cbba,_-10px_-10px_20px_#ffffff] transition-all duration-500 hover:-translate-y-2 hover:shadow-[14px_14px_28px_#d9cbba,_-14px_-14px_28px_#ffffff] hover:border-orange-400/40 overflow-hidden"
-          >
-            <div className="relative space-y-6">
-              {/* Recessed Icon Holder */}
-              <div className="w-16 h-16 rounded-2xl bg-[#FAEBD7] shadow-[inset_3px_3px_6px_#d9cbba,_inset_-3px_-3px_6px_#ffffff] border border-[#f5e3cc]/50 flex items-center justify-center text-orange-600 group-hover:scale-105 transition-all duration-300">
-                <LayoutGrid className="w-8 h-8" />
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-slate-800 group-hover:text-orange-600 transition-colors duration-300">
-                  DevBoard
-                </h3>
-                <p className="text-slate-600 leading-relaxed text-sm font-medium">
-                  Excel & Data Knowledge Board. Save, catalog, and query formulas, keyboard shortcuts, snippets, and notes in a unified glassy workspace.
-                </p>
-              </div>
-
-              {/* Tag / Badge list (Recessed Soft Pills) */}
-              <div className="flex flex-wrap gap-2 pt-2">
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  Supabase DB
-                </span>
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  Formula Catalog
-                </span>
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  Keyboard Shortcuts
-                </span>
-              </div>
-
-              {/* Neomorphic Button styled to bg-[#FAEBD7] */}
-              <div className="pt-4">
-                <div className="inline-flex items-center gap-2 text-orange-600 text-sm font-extrabold bg-[#FAEBD7] border border-[#f5e3cc] px-6 py-3 rounded-2xl shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff] group-hover:shadow-[inset_2px_2px_5px_#d9cbba,_inset_-2px_-2px_5px_#ffffff] transition-all duration-300">
-                  Launch DevBoard
-                  <ArrowRight className="w-4 h-4 text-orange-500 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </div>
-          </a>
-
-          {/* Card 2: DevStore */}
-          <a
-            href={devstoreUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative rounded-[36px] border border-[#f5e3cc] bg-[#FAEBD7] p-8 md:p-10 shadow-[10px_10px_20px_#d9cbba,_-10px_-10px_20px_#ffffff] transition-all duration-500 hover:-translate-y-2 hover:shadow-[14px_14px_28px_#d9cbba,_-14px_-14px_28px_#ffffff] hover:border-orange-400/40 overflow-hidden"
-          >
-            <div className="relative space-y-6">
-              {/* Recessed Icon Holder */}
-              <div className="w-16 h-16 rounded-2xl bg-[#FAEBD7] shadow-[inset_3px_3px_6px_#d9cbba,_inset_-3px_-3px_6px_#ffffff] border border-[#f5e3cc]/50 flex items-center justify-center text-orange-600 group-hover:scale-105 transition-all duration-300">
-                <Database className="w-8 h-8" />
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-slate-800 group-hover:text-orange-600 transition-colors duration-300">
-                  DevStore
-                </h3>
-                <p className="text-slate-600 leading-relaxed text-sm font-medium">
-                  Google Drive Cloud Storage. Direct sync to your drive, custom upload limits, connection setup, retention configurations, and secure cloud sharing.
-                </p>
-              </div>
-
-              {/* Tag / Badge list (Recessed Soft Pills) */}
-              <div className="flex flex-wrap gap-2 pt-2">
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  Google Drive API
-                </span>
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  OAuth Integration
-                </span>
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  Retention Policy
-                </span>
-              </div>
-
-              {/* Neomorphic Button styled to bg-[#FAEBD7] */}
-              <div className="pt-4">
-                <div className="inline-flex items-center gap-2 text-orange-600 text-sm font-extrabold bg-[#FAEBD7] border border-[#f5e3cc] px-6 py-3 rounded-2xl shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff] group-hover:shadow-[inset_2px_2px_5px_#d9cbba,_inset_-2px_-2px_5px_#ffffff] transition-all duration-300">
-                  Launch DevStore
-                  <ArrowRight className="w-4 h-4 text-orange-500 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </div>
-          </a>
-
-          {/* Card 3: DevPass */}
-          <a
-            href={devpassUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative rounded-[36px] border border-[#f5e3cc] bg-[#FAEBD7] p-8 md:p-10 shadow-[10px_10px_20px_#d9cbba,_-10px_-10px_20px_#ffffff] transition-all duration-500 hover:-translate-y-2 hover:shadow-[14px_14px_28px_#d9cbba,_-14px_-14px_28px_#ffffff] hover:border-orange-400/40 overflow-hidden"
-          >
-            <div className="relative space-y-6">
-              {/* Recessed Icon Holder */}
-              <div className="w-16 h-16 rounded-2xl bg-[#FAEBD7] shadow-[inset_3px_3px_6px_#d9cbba,_inset_-3px_-3px_6px_#ffffff] border border-[#f5e3cc]/50 flex items-center justify-center text-orange-600 group-hover:scale-105 transition-all duration-300">
-                <Key className="w-8 h-8" />
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-slate-800 group-hover:text-orange-600 transition-colors duration-300">
-                  DevPass
-                </h3>
-                <p className="text-slate-600 leading-relaxed text-sm font-medium">
-                  Secure Glassmorphic Password Manager. Encrypt and manage passwords locally with AES-256 and store them securely in your Google Sheets database.
-                </p>
-              </div>
-
-              {/* Tag / Badge list (Recessed Soft Pills) */}
-              <div className="flex flex-wrap gap-2 pt-2">
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  AES-256
-                </span>
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  Google Sheets
-                </span>
-                <span className="text-xs px-3 py-1.5 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[inset_1px_1px_3px_#d9cbba,_inset_-1px_-1px_3px_#ffffff] text-slate-600 font-semibold rounded-full">
-                  Zero-Knowledge
-                </span>
-              </div>
-
-              {/* Neomorphic Button styled to bg-[#FAEBD7] */}
-              <div className="pt-4">
-                <div className="inline-flex items-center gap-2 text-orange-600 text-sm font-extrabold bg-[#FAEBD7] border border-[#f5e3cc] px-6 py-3 rounded-2xl shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff] group-hover:shadow-[inset_2px_2px_5px_#d9cbba,_inset_-2px_-2px_5px_#ffffff] transition-all duration-300">
-                  Launch DevPass
-                  <ArrowRight className="w-4 h-4 text-orange-500 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
+        <AppLauncher urls={{
+          devboard: devboardUrl,
+          devstore: devstoreUrl,
+          devpass: devpassUrl,
+        }} />
       </div>
 
-      {/* Footer */}
       <footer className="w-full text-center py-8 text-xs text-slate-500 z-10 border-t border-[#f3dfc6]/80 mt-16">
-        &copy; {new Date().getFullYear()} DevSuite Hub. Powered by Clerk Authentication.
+        &copy; {new Date().getFullYear()} DevSuite Hub. Powered by Clerk SSO Authentication.
       </footer>
     </main>
   );
