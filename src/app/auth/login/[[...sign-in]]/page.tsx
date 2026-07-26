@@ -29,7 +29,7 @@ export default function LoginPage() {
           path="/auth/login"
           routing="path"
           signUpUrl="/auth/sign-up"
-          forceRedirectUrl="/dashboard"
+          fallbackRedirectUrl="/dashboard"
           appearance={{
             elements: {
               card: "bg-[#FAEBD7] border border-[#f5e3cc] shadow-[12px_12px_24px_#d9cbba,_-12px_-12px_24px_#ffffff] rounded-[28px] p-6",
