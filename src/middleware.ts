@@ -13,11 +13,9 @@ export default clerkMiddleware(async (auth, req) => {
   // Only redirect if there is no redirect_url in the search params (which indicates satellite sync)
   if (userId && isPublicRoute(req)) {
     const redirectUrl = req.nextUrl.searchParams.get("redirect_url");
-    if (redirectUrl) {
-      // Let Clerk handle the redirect/sync with the satellite domain
-      return NextResponse.next();
+    if (!redirectUrl) {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
     }
-    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
   // Protect all non-public routes
