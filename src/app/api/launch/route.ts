@@ -20,7 +20,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const targetUrl = APP_URLS[app];
+  const host = request.headers.get("host") || "";
+  const isLocalhost = host.includes("localhost");
+
+  let targetUrl = APP_URLS[app];
+  if (isLocalhost) {
+    if (app === "devboard") targetUrl = "http://localhost:3001";
+    if (app === "devstore") targetUrl = "http://localhost:3002";
+    if (app === "devpass") targetUrl = "http://localhost:3003";
+  }
 
   return NextResponse.json({
     redirectUrl: targetUrl,
