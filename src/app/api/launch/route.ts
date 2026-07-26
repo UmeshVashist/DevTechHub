@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -11,13 +10,13 @@ export async function GET(request: Request) {
   let redirectUrl = "";
 
   if (isLocalhost) {
-    if (app === "devboard") redirectUrl = "http://localhost:3001/board";
-    if (app === "devstore") redirectUrl = "http://localhost:3002/store";
-    if (app === "devpass") redirectUrl = "http://localhost:3003/pass";
+    if (app === "devboard") redirectUrl = "http://localhost:3001";
+    if (app === "devstore") redirectUrl = "http://localhost:3002";
+    if (app === "devpass") redirectUrl = "http://localhost:3003";
   } else {
-    if (app === "devboard") redirectUrl = "/board";
-    if (app === "devstore") redirectUrl = "/store";
-    if (app === "devpass") redirectUrl = "/pass";
+    if (app === "devboard") redirectUrl = process.env.NEXT_PUBLIC_DEVBOARD_URL || "https://devboard.cashms.in";
+    if (app === "devstore") redirectUrl = process.env.NEXT_PUBLIC_DEVSTORE_URL || "https://devstore.cashms.in";
+    if (app === "devpass") redirectUrl = process.env.NEXT_PUBLIC_DEVPASS_URL || "https://devpass.cashms.in";
   }
 
   if (!redirectUrl) {

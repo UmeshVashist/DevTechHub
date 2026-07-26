@@ -9,10 +9,13 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
 
-  // If the user is signed in and trying to access an auth page, redirect to target URL or dashboard
+  // If the user is signed in and trying to access an auth page, redirect to dashboard
+  // Only redirect if there is no redirect_url in the search params (which indicates satellite sync)
   if (userId && isPublicRoute(req)) {
-    const redirectUrl = req.nextUrl.searchParams.get("redirect_url") || "/dashboard";
-    return NextResponse.redirect(new URL(redirectUrl, req.url));
+    const redirectUrl = req.nextUrl.searchParams.get("redirect_url");
+    if (!redirectUrl) {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
   }
 
   // Protect all non-public routes
