@@ -13,10 +13,12 @@ export async function GET(request: Request) {
     if (app === "devboard") redirectUrl = "http://localhost:3001";
     if (app === "devstore") redirectUrl = "http://localhost:3002";
     if (app === "devpass") redirectUrl = "http://localhost:3003";
+    if (app === "daydate") redirectUrl = "https://day-date.vercel.app/";
   } else {
     if (app === "devboard") redirectUrl = process.env.NEXT_PUBLIC_DEVBOARD_URL || "https://devboard.cashms.in";
     if (app === "devstore") redirectUrl = process.env.NEXT_PUBLIC_DEVSTORE_URL || "https://devstore.cashms.in";
     if (app === "devpass") redirectUrl = process.env.NEXT_PUBLIC_DEVPASS_URL || "https://devpass.cashms.in";
+    if (app === "daydate") redirectUrl = process.env.NEXT_PUBLIC_DAYDATE_URL || "https://day-date.vercel.app/";
   }
 
   if (!redirectUrl) {

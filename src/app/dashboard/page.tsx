@@ -10,6 +10,7 @@ export default async function DashboardPage() {
   const devboardUrl = process.env.NEXT_PUBLIC_DEVBOARD_URL || "http://localhost:3001";
   const devstoreUrl = process.env.NEXT_PUBLIC_DEVSTORE_URL || "http://localhost:3002";
   const devpassUrl = process.env.NEXT_PUBLIC_DEVPASS_URL || "http://localhost:3003";
+  const daydateUrl = process.env.NEXT_PUBLIC_DAYDATE_URL || "https://day-date.vercel.app/";
 
   return (
     <main className="relative min-h-screen w-full flex flex-col bg-[#FAEBD7] text-slate-800 overflow-hidden px-6 py-10 md:px-16">
@@ -38,7 +39,7 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      <div className="max-w-6xl w-full mx-auto flex-1 flex flex-col justify-center z-10 space-y-12">
+      <div className="max-w-7xl w-full mx-auto flex-1 flex flex-col justify-center z-10 space-y-12">
         <div className="space-y-4">
           <h2 className="text-sm uppercase tracking-[0.25em] text-orange-600 font-extrabold">
             Central Application Hub
@@ -47,7 +48,7 @@ export default async function DashboardPage() {
             Welcome to <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">DevSuite Workspace</span>
           </h1>
           <p className="text-slate-600 max-w-2xl text-lg font-medium leading-relaxed">
-            Access your unified development tools and databases. Select an environment below to jump directly into your work without logging in again — single sign-on handles it seamlessly.
+            Access your unified development tools and databases. Select an environment below to jump directly into your work.
           </p>
         </div>
 
@@ -55,6 +56,7 @@ export default async function DashboardPage() {
           devboard: devboardUrl,
           devstore: devstoreUrl,
           devpass: devpassUrl,
+          daydate: daydateUrl,
         }} />
       </div>
 

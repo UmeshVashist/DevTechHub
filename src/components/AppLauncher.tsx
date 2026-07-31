@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { LayoutGrid, Database, ArrowRight, Key, Loader2 } from "lucide-react";
+import { LayoutGrid, Database, ArrowRight, Key, Calendar, Loader2 } from "lucide-react";
 
 const APP_CONFIG = {
   devboard: {
@@ -13,6 +12,7 @@ const APP_CONFIG = {
     fallbackUrl: "http://localhost:3001",
     description: "Excel & Data Knowledge Board. Save, catalog, and query formulas, keyboard shortcuts, snippets, and notes in a unified glassy workspace.",
     tags: ["Supabase DB", "Formula Catalog", "Keyboard Shortcuts"],
+    isPublic: false,
   },
   devstore: {
     name: "DevStore",
@@ -22,6 +22,7 @@ const APP_CONFIG = {
     fallbackUrl: "http://localhost:3002",
     description: "Google Drive Cloud Storage. Direct sync to your drive, custom upload limits, connection setup, retention configurations, and secure cloud sharing.",
     tags: ["Google Drive API", "OAuth Integration", "Retention Policy"],
+    isPublic: false,
   },
   devpass: {
     name: "DevPass",
@@ -31,6 +32,17 @@ const APP_CONFIG = {
     fallbackUrl: "http://localhost:3003",
     description: "Secure Glassmorphic Password Manager. Encrypt and manage passwords locally with AES-256 and store them securely in your Google Sheets database.",
     tags: ["AES-256", "Google Sheets", "Zero-Knowledge"],
+    isPublic: false,
+  },
+  daydate: {
+    name: "Day Date System",
+    icon: Calendar,
+    color: "text-orange-600",
+    envKey: "NEXT_PUBLIC_DAYDATE_URL",
+    fallbackUrl: "https://day-date.vercel.app/",
+    description: "Public Day & Date System. Quick access date calculations, scheduling, and calendar utilities without login requirement.",
+    tags: ["Public App", "No Login Needed", "Date & Calendar"],
+    isPublic: true,
   },
 } as const;
 
@@ -48,6 +60,12 @@ function AppCard({ appId, appUrl }: AppCardProps) {
 
   const handleLaunch = async (e: React.MouseEvent) => {
     e.preventDefault();
+
+    if (config.isPublic) {
+      window.open(appUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+
     setLaunching(true);
 
     try {
@@ -123,15 +141,17 @@ interface AppLauncherProps {
     devboard: string;
     devstore: string;
     devpass: string;
+    daydate: string;
   };
 }
 
 export function AppLauncher({ urls }: AppLauncherProps) {
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 pt-4">
+    <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8 pt-4">
       <AppCard appId="devboard" appUrl={urls.devboard} />
       <AppCard appId="devstore" appUrl={urls.devstore} />
       <AppCard appId="devpass" appUrl={urls.devpass} />
+      <AppCard appId="daydate" appUrl={urls.daydate} />
     </div>
   );
 }
