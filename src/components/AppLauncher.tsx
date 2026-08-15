@@ -147,7 +147,7 @@ interface AppLauncherProps {
 
 export function AppLauncher({ urls }: AppLauncherProps) {
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8 pt-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
       <AppCard appId="devboard" appUrl={urls.devboard} />
       <AppCard appId="devstore" appUrl={urls.devstore} />
       <AppCard appId="devpass" appUrl={urls.devpass} />
