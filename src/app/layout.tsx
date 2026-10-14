@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevTech App Hub",
-  description: "Central launch hub for DevSuite applications",
+  title: "DevSuite Hub • Powered by UV Tech",
+  description: "Central developer workspace and application launchpad powered by UV Tech.",
   icons: {
     icon: "https://jxechgirxrbrblyrrqmt.supabase.co/storage/v1/object/public/images/bb5b5ced-6b47-425c-aad2-065017342a96/1784716404934-network.png",
   },

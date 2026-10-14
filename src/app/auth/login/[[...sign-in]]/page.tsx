@@ -1,14 +1,16 @@
 "use client"
 
+import Link from "next/link"
 import { SignIn } from "@clerk/nextjs"
 import { motion } from "framer-motion"
+import { Layers, ArrowLeft } from "lucide-react"
 
 export default function LoginPage() {
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center p-6 bg-[#FAEBD7] overflow-hidden">
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#FAEBD7] overflow-hidden">
       {/* Decorative Neomorphic Background Elements */}
-      <div className="absolute top-10 left-10 w-48 h-48 bg-[#FAEBD7] rounded-full shadow-[16px_16px_32px_#d9cbba,_-16px_-16px_32px_#ffffff]" />
-      <div className="absolute bottom-10 right-10 w-64 h-64 bg-[#FAEBD7] rounded-full shadow-[20px_20px_40px_#d9cbba,_-20px_-20px_40px_#ffffff]" />
+      <div className="absolute top-10 left-10 w-48 h-48 bg-[#FAEBD7] rounded-full shadow-[16px_16px_32px_#d9cbba,_-16px_-16px_32px_#ffffff] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-64 h-64 bg-[#FAEBD7] rounded-full shadow-[20px_20px_40px_#d9cbba,_-20px_-20px_40px_#ffffff] pointer-events-none" />
       
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -16,15 +18,25 @@ export default function LoginPage() {
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="w-full max-w-md flex flex-col items-center relative z-10"
       >
-        {/* <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
-            DevSuite Hub
+        {/* App Logo - Clicking this switches to the Home page */}
+        <Link
+          href="/"
+          className="group mb-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300"
+          title="Click to go to Home Page"
+        >
+          <div className="w-16 h-16 mb-3 rounded-2xl bg-[#FAEBD7] border border-[#f5e3cc] flex items-center justify-center shadow-[6px_6px_12px_#d9cbba,_-6px_-6px_12px_#ffffff] group-hover:shadow-[inset_3px_3px_6px_#d9cbba,_inset_-3px_-3px_6px_#ffffff] group-hover:scale-105 transition-all duration-300">
+            <Layers className="w-8 h-8 text-orange-600 group-hover:scale-110 transition-transform duration-300" />
+          </div>
+          <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent group-hover:opacity-90">
+            DevSuite
           </h1>
-          <p className="text-sm text-slate-600 mt-2 font-medium">
-            One account. Access all your development workspaces.
-          </p>
-        </div> */}
+          <div className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-orange-600 transition-colors">
+            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
+            <span>Click logo or here to switch to Home</span>
+          </div>
+        </Link>
 
+        {/* Clerk Sign In component */}
         <SignIn
           path="/auth/login"
           routing="path"
@@ -46,6 +58,11 @@ export default function LoginPage() {
             },
           } as any}
         />
+
+        {/* Footer text */}
+        <div className="mt-8 text-xs font-semibold text-slate-500">
+          &copy; 2026 Powered by UV Tech
+        </div>
       </motion.div>
     </div>
   )

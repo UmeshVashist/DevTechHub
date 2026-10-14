@@ -2,6 +2,16 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher([
+  "/",
+  "/features(.*)",
+  "/privacy(.*)",
+  "/privacy-policy(.*)",
+  "/about(.*)",
+  "/auth/login(.*)",
+  "/auth/sign-up(.*)",
+]);
+
+const isAuthRoute = createRouteMatcher([
   "/auth/login(.*)",
   "/auth/sign-up(.*)",
 ]);
@@ -9,16 +19,15 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
 
-  // If the user is signed in and trying to access an auth page, redirect to dashboard
-  // Only redirect if there is no redirect_url in the search params (which indicates satellite sync)
-  if (userId && isPublicRoute(req)) {
+  // If the user is signed in and trying to access an auth page (login/signup) without redirect_url, send to dashboard
+  if (userId && isAuthRoute(req)) {
     const redirectUrl = req.nextUrl.searchParams.get("redirect_url");
     if (!redirectUrl) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
   }
 
-  // Protect all non-public routes
+  // Protect all non-public routes (like /dashboard, /api/launch etc)
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
