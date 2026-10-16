@@ -144,12 +144,20 @@ export default function PrivacyPolicyPage() {
             >
               &larr; Back to Home
             </Link>
-            <Link
-              href="/features"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 shadow-[4px_4px_12px_rgba(234,88,12,0.3)] hover:from-orange-700 hover:to-amber-700 transition-all"
-            >
-              Explore Features &rarr;
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/terms"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold text-slate-800 bg-[#FAEBD7] border border-[#f5e3cc] shadow-[4px_4px_8px_#d9cbba,_-4px_-4px_8px_#ffffff] hover:shadow-[inset_2px_2px_4px_#d9cbba,_inset_-2px_-2px_4px_#ffffff] hover:text-orange-600 transition-all"
+              >
+                Terms &amp; Conditions &rarr;
+              </Link>
+              <Link
+                href="/features"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 shadow-[4px_4px_12px_rgba(234,88,12,0.3)] hover:from-orange-700 hover:to-amber-700 transition-all"
+              >
+                Explore Features &rarr;
+              </Link>
+            </div>
           </div>
 
         </div>

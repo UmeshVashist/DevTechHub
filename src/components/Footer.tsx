@@ -69,6 +69,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/terms"
+                  className="text-slate-700 hover:text-orange-600 transition-colors inline-flex items-center gap-1.5"
+                >
+                  <span>Terms &amp; Conditions</span>
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/dashboard"
                   className="text-slate-700 hover:text-orange-600 transition-colors inline-flex items-center gap-1.5"
                 >
@@ -130,7 +138,7 @@ export function Footer() {
             <span className="hidden md:inline text-slate-500">All rights reserved.</span>
           </div>
 
-          <div className="flex items-center gap-4 text-slate-600">
+          <div className="flex items-center gap-4 text-slate-600 flex-wrap justify-center sm:justify-end">
             <Link href="/" className="hover:text-orange-600 transition-colors">
               Home
             </Link>
@@ -141,6 +149,10 @@ export function Footer() {
             <span>•</span>
             <Link href="/privacy" className="hover:text-orange-600 transition-colors">
               Privacy Policy
+            </Link>
+            <span>•</span>
+            <Link href="/terms" className="hover:text-orange-600 transition-colors">
+              Terms &amp; Conditions
             </Link>
             <span>•</span>
             <Link href="/auth/login" className="hover:text-orange-600 transition-colors">

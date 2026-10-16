@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { SignIn } from "@clerk/nextjs"
 import { motion } from "framer-motion"
-import { Layers, ArrowLeft } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 export default function LoginPage() {
   return (
@@ -24,12 +24,12 @@ export default function LoginPage() {
           className="group mb-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300"
           title="Click to go to Home Page"
         >
-          <div className="w-16 h-16 mb-3 rounded-2xl bg-[#FAEBD7] border border-[#f5e3cc] flex items-center justify-center shadow-[6px_6px_12px_#d9cbba,_-6px_-6px_12px_#ffffff] group-hover:shadow-[inset_3px_3px_6px_#d9cbba,_inset_-3px_-3px_6px_#ffffff] group-hover:scale-105 transition-all duration-300">
+          {/* <div className="w-16 h-16 mb-3 rounded-2xl bg-[#FAEBD7] border border-[#f5e3cc] flex items-center justify-center shadow-[6px_6px_12px_#d9cbba,_-6px_-6px_12px_#ffffff] group-hover:shadow-[inset_3px_3px_6px_#d9cbba,_inset_-3px_-3px_6px_#ffffff] group-hover:scale-105 transition-all duration-300">
             <Layers className="w-8 h-8 text-orange-600 group-hover:scale-110 transition-transform duration-300" />
           </div>
           <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent group-hover:opacity-90">
             DevSuite
-          </h1>
+          </h1> */}
           <div className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-slate-500 group-hover:text-orange-600 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
             <span>Click logo or here to switch to Home</span>
@@ -56,6 +56,7 @@ export default function LoginPage() {
               formFieldLabel: "text-slate-700 font-medium text-xs mb-1",
               formFieldInput: "bg-[#FAEBD7] border border-[#f3dfc6] rounded-xl px-4 py-2.5 focus:border-orange-500/40 focus:ring-1 focus:ring-orange-500/30 text-slate-800 shadow-[inset_2px_2px_5px_#d9cbba,_inset_-2px_-2px_5px_#ffffff] transition-all",
             },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any}
         />
 

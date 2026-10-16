@@ -56,6 +56,7 @@ export default function SignUpPage() {
               formFieldLabel: "text-slate-700 font-medium text-xs mb-1",
               formFieldInput: "bg-[#FAEBD7] border border-[#f3dfc6] rounded-xl px-4 py-2.5 focus:border-orange-500/40 focus:ring-1 focus:ring-orange-500/30 text-slate-800 shadow-[inset_2px_2px_5px_#d9cbba,_inset_-2px_-2px_5px_#ffffff] transition-all",
             },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any}
         />
 
