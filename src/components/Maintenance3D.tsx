@@ -1,148 +1,111 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import {
-  ShieldAlert,
-  Cpu,
-  RefreshCw,
-  Clock,
-  Sparkles,
-  Server,
-  Database,
-  Lock,
-  ChevronRight,
-  Radio,
-  CheckCircle2,
-} from "lucide-react";
 import * as THREE from "three";
 
-interface Maintenance3DProps {
-  initialMessage?: string;
-  initialEstimatedTime?: string;
-}
-
-export function Maintenance3D({
-  initialMessage = "We are currently performing scheduled core upgrades to bring you enhanced performance and new features. DevSuite Hub will be back online shortly.",
-  initialEstimatedTime = "Under 1 Hour",
-}: Maintenance3DProps) {
+export function Maintenance3D() {
   const mountRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const [message] = useState(initialMessage);
-  const [estimatedTime] = useState(initialEstimatedTime);
-  const [isChecking, setIsChecking] = useState(false);
-  const [checkResult, setCheckResult] = useState<string | null>(null);
-
-  // System diagnostic progress animation
-  const [step, setStep] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStep((prev) => (prev + 1) % 4);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Three.js 3D Scene Setup
+  // Three.js 3D Interactive Scene
   useEffect(() => {
     const currentMount = mountRef.current;
     if (!currentMount) return;
 
-    // Scene & Camera
+    // Scene & Fog
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x090d16, 0.025);
+    scene.fog = new THREE.FogExp2(0x060911, 0.02);
 
+    // Camera
     const camera = new THREE.PerspectiveCamera(
-      60,
+      55,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    camera.position.z = 18;
+    camera.position.z = 13;
 
-    // Renderer
+    // WebGL Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     currentMount.appendChild(renderer.domElement);
 
-    // Group for 3D Core
+    // Central 3D Group
     const coreGroup = new THREE.Group();
     scene.add(coreGroup);
 
-    // 1. Inner Glowing Icosahedron (The Reactor Core)
-    const innerGeo = new THREE.IcosahedronGeometry(3.5, 1);
+    // 1. Central Rotating Icosahedron (Inner Core)
+    const innerGeo = new THREE.IcosahedronGeometry(2.8, 1);
     const innerMat = new THREE.MeshStandardMaterial({
       color: 0xf59e0b,
-      roughness: 0.2,
-      metalness: 0.8,
       wireframe: true,
       emissive: 0xd97706,
-      emissiveIntensity: 0.6,
+      emissiveIntensity: 0.9,
+      roughness: 0.1,
+      metalness: 0.9,
     });
     const innerCore = new THREE.Mesh(innerGeo, innerMat);
     coreGroup.add(innerCore);
 
-    // 2. Middle Wireframe Octahedron
-    const midGeo = new THREE.OctahedronGeometry(5.2, 0);
+    // 2. Middle Cyber Octahedron
+    const midGeo = new THREE.OctahedronGeometry(4.2, 0);
     const midMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       wireframe: true,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.75,
     });
     const midCore = new THREE.Mesh(midGeo, midMat);
     coreGroup.add(midCore);
 
-    // 3. Floating Orbital Torus Rings
-    const ring1Geo = new THREE.TorusGeometry(7.2, 0.06, 16, 100);
-    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.7 });
+    // 3. Orbital Energy Torus Rings
+    const ring1Geo = new THREE.TorusGeometry(5.8, 0.05, 16, 100);
+    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.85 });
     const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
     ring1.rotation.x = Math.PI / 3;
     coreGroup.add(ring1);
 
-    const ring2Geo = new THREE.TorusGeometry(8.5, 0.05, 16, 100);
-    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.5 });
+    const ring2Geo = new THREE.TorusGeometry(6.9, 0.045, 16, 100);
+    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.7 });
     const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
     ring2.rotation.y = Math.PI / 4;
-    ring2.rotation.x = -Math.PI / 6;
+    ring2.rotation.x = -Math.PI / 5;
     coreGroup.add(ring2);
 
-    const ring3Geo = new THREE.TorusGeometry(9.8, 0.04, 16, 100);
-    const ring3Mat = new THREE.MeshBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.4 });
+    const ring3Geo = new THREE.TorusGeometry(7.8, 0.035, 16, 100);
+    const ring3Mat = new THREE.MeshBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.6 });
     const ring3 = new THREE.Mesh(ring3Geo, ring3Mat);
-    ring3.rotation.z = Math.PI / 2.5;
+    ring3.rotation.z = Math.PI / 2.3;
     coreGroup.add(ring3);
 
-    // 4. Floating Cyber Particle Field (1000 Stars/Embers)
-    const particleCount = 1000;
+    // 4. Starfield & Floating Glowing Embers (1200 Particles)
+    const particleCount = 1200;
     const particleGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
-    const color1 = new THREE.Color(0xf59e0b); // Amber
-    const color2 = new THREE.Color(0x38bdf8); // Cyan
-    const color3 = new THREE.Color(0x10b981); // Emerald
+    const colorAmber = new THREE.Color(0xf59e0b);
+    const colorCyan = new THREE.Color(0x38bdf8);
+    const colorEmerald = new THREE.Color(0x34d399);
 
     for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 60;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 60;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+      positions[i * 3] = (Math.random() - 0.5) * 50;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 50;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 35;
 
-      const mixedColor =
-        i % 3 === 0 ? color1 : i % 3 === 1 ? color2 : color3;
-      colors[i * 3] = mixedColor.r;
-      colors[i * 3 + 1] = mixedColor.g;
-      colors[i * 3 + 2] = mixedColor.b;
+      const c = i % 3 === 0 ? colorAmber : i % 3 === 1 ? colorCyan : colorEmerald;
+      colors[i * 3] = c.r;
+      colors[i * 3 + 1] = c.g;
+      colors[i * 3 + 2] = c.b;
     }
 
     particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     particleGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.18,
+      size: 0.16,
       vertexColors: true,
       transparent: true,
       opacity: 0.85,
@@ -150,34 +113,34 @@ export function Maintenance3D({
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    const amberPoint = new THREE.PointLight(0xf59e0b, 3, 50);
-    amberPoint.position.set(10, 10, 10);
-    scene.add(amberPoint);
+    const amberLight = new THREE.PointLight(0xf59e0b, 4, 40);
+    amberLight.position.set(8, 8, 8);
+    scene.add(amberLight);
 
-    const cyanPoint = new THREE.PointLight(0x06b6d4, 3, 50);
-    cyanPoint.position.set(-10, -10, 10);
-    scene.add(cyanPoint);
+    const cyanLight = new THREE.PointLight(0x0284c7, 3, 40);
+    cyanLight.position.set(-8, -8, 8);
+    scene.add(cyanLight);
 
-    // Mouse Interaction for 3D Tilt
+    // Interactive Mouse Tracking Parallax
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
     let targetY = 0;
 
-    const handleMouseMove = (event: MouseEvent) => {
-      const halfX = window.innerWidth / 2;
-      const halfY = window.innerHeight / 2;
-      mouseX = (event.clientX - halfX) / halfX;
-      mouseY = (event.clientY - halfY) / halfY;
+    const handleMouseMove = (e: MouseEvent) => {
+      const halfW = window.innerWidth / 2;
+      const halfH = window.innerHeight / 2;
+      mouseX = (e.clientX - halfW) / halfW;
+      mouseY = (e.clientY - halfH) / halfH;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
 
-    // Resize Handler
+    // Resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -186,37 +149,36 @@ export function Maintenance3D({
     window.addEventListener("resize", handleResize);
 
     // Animation Loop
-    let animationFrameId: number;
-    let clock = new THREE.Clock();
+    let animationId: number;
+    const clock = new THREE.Clock();
 
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const time = clock.getElapsedTime();
 
-      // Smooth camera tilt towards mouse
-      targetX = mouseX * 2.5;
-      targetY = -mouseY * 2.5;
+      // Camera parallax
+      targetX = mouseX * 2.2;
+      targetY = -mouseY * 2.2;
       camera.position.x += (targetX - camera.position.x) * 0.05;
       camera.position.y += (targetY - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
 
-      // Core rotations
-      innerCore.rotation.x += 0.3 * delta;
-      innerCore.rotation.y += 0.45 * delta;
+      // Rotations
+      innerCore.rotation.x += 0.45 * delta;
+      innerCore.rotation.y += 0.6 * delta;
 
-      midCore.rotation.x -= 0.2 * delta;
-      midCore.rotation.z += 0.35 * delta;
+      midCore.rotation.x -= 0.3 * delta;
+      midCore.rotation.z += 0.4 * delta;
 
-      ring1.rotation.z += 0.4 * delta;
-      ring2.rotation.x += 0.35 * delta;
-      ring3.rotation.y += 0.3 * delta;
+      ring1.rotation.z += 0.5 * delta;
+      ring2.rotation.x += 0.45 * delta;
+      ring3.rotation.y += 0.4 * delta;
 
-      // Pulse core scale
-      const scale = 1 + Math.sin(time * 2) * 0.05;
-      coreGroup.scale.set(scale, scale, scale);
+      // Subtle breathing pulse
+      const pulse = 1 + Math.sin(time * 2.2) * 0.06;
+      coreGroup.scale.set(pulse, pulse, pulse);
 
-      // Rotate particle field slowly
       particles.rotation.y = time * 0.02;
 
       renderer.render(scene, camera);
@@ -227,7 +189,7 @@ export function Maintenance3D({
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animationId);
       if (currentMount.contains(renderer.domElement)) {
         currentMount.removeChild(renderer.domElement);
       }
@@ -235,9 +197,9 @@ export function Maintenance3D({
     };
   }, []);
 
-  // Periodic automatic polling to detect when admin turns site back ON
+  // Background check: as soon as the site is turned ON, redirect user back to live website
   useEffect(() => {
-    const checkLiveStatus = async () => {
+    const checkLive = async () => {
       try {
         const res = await fetch("/api/maintenance", { cache: "no-store" });
         if (res.ok) {
@@ -250,154 +212,79 @@ export function Maintenance3D({
       } catch {}
     };
 
-    const interval = setInterval(checkLiveStatus, 5000);
+    const interval = setInterval(checkLive, 3000);
     return () => clearInterval(interval);
   }, [router]);
 
-  // Manual Check Button
-  const handleCheckStatus = async () => {
-    setIsChecking(true);
-    setCheckResult(null);
-    try {
-      const res = await fetch("/api/maintenance", { cache: "no-store" });
-      const data = await res.json();
-      if (data.isMaintenance === false) {
-        setCheckResult("System is back online! Redirecting...");
-        setTimeout(() => {
-          router.push("/");
-          router.refresh();
-        }, 800);
-      } else {
-        setCheckResult("Maintenance is still active. Please check back in a few minutes.");
-      }
-    } catch {
-      setCheckResult("Unable to reach server. Please retry.");
-    } finally {
-      setIsChecking(false);
-    }
-  };
-
-  const diagnosticItems = [
-    { label: "Core Database Cluster", status: "Optimized", progress: "100%", icon: Database },
-    { label: "Security & Encryption Keys", status: "Secured", progress: "100%", icon: Lock },
-    { label: "API Gateways & Cloud Sync", status: "Upgrading", progress: "88%", icon: Server },
-    { label: "Microservices & UI Engine", status: "Synchronizing", progress: "92%", icon: Cpu },
-  ];
-
   return (
-    <div className="relative min-h-screen w-full bg-[#070b13] text-white flex flex-col items-center justify-center overflow-hidden select-none font-sans">
-      {/* 3D WebGL Canvas Container */}
-      <div
-        ref={mountRef}
-        className="absolute inset-0 z-0 pointer-events-none opacity-85"
-      />
+    <div className="relative min-h-screen w-full bg-[#050811] text-white flex flex-col justify-between overflow-hidden select-none font-sans">
+      {/* 3D WebGL Canvas Layer (Full Screen, fully visible and centered) */}
+      <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Cybernetic Ambient Glow Background Gradients */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-amber-500/15 rounded-full blur-[128px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-cyan-500/15 rounded-full blur-[128px] pointer-events-none animate-pulse" />
+      {/* Cybernetic Ambient Light Flares */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none" />
 
-      {/* Foreground Content Card */}
-      <div className="relative z-10 w-full max-w-2xl px-6 py-10 my-auto">
-        <div className="relative backdrop-blur-2xl bg-slate-900/75 border border-white/10 rounded-3xl p-8 sm:p-10 shadow-[0_0_80px_rgba(245,158,11,0.18)] hover:border-amber-500/30 transition-all duration-500">
-          
-          {/* Header Status Pill */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wider uppercase">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
-              </span>
-              Under Maintenance Mode
-            </div>
-
-            <div className="inline-flex items-center gap-1.5 text-xs text-slate-400 font-mono">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span>ETA: <strong className="text-amber-300 font-medium">{estimatedTime}</strong></span>
-            </div>
-          </div>
-
-          {/* Main Title */}
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-100 to-amber-400">
-            System Upgrades in Progress
-          </h1>
-
-          {/* Description */}
-          <p className="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-            {message}
-          </p>
-
-          {/* Live Diagnostic Pulse Cards */}
-          <div className="mt-8 space-y-2.5">
-            <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
-              <Radio className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
-              Live System Status
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {diagnosticItems.map((item, idx) => {
-                const IconComponent = item.icon;
-                const isActive = step === idx;
-                return (
-                  <div
-                    key={item.label}
-                    className={`flex items-center justify-between p-3 rounded-xl border transition-all duration-300 ${
-                      isActive
-                        ? "bg-amber-500/10 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)]"
-                        : "bg-slate-950/40 border-white/5"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className={`p-1.5 rounded-lg ${isActive ? "bg-amber-500/20 text-amber-300" : "bg-white/5 text-slate-400"}`}>
-                        <IconComponent className="w-4 h-4" />
-                      </div>
-                      <span className="text-xs font-medium text-slate-200">{item.label}</span>
-                    </div>
-                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-white/5 text-amber-300 font-medium">
-                      {item.progress}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Action Bar */}
-          <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <button
-              onClick={handleCheckStatus}
-              disabled={isChecking}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-sm tracking-wide shadow-lg shadow-amber-500/25 transition-all transform active:scale-95 disabled:opacity-50 cursor-pointer"
-            >
-              <RefreshCw className={`w-4 h-4 ${isChecking ? "animate-spin" : ""}`} />
-              {isChecking ? "Checking Status..." : "Check System Status"}
-            </button>
-
-            <span className="text-xs text-slate-400 text-center sm:text-right">
-              Auto-refreshes every 5 seconds
-            </span>
-          </div>
-
-          {/* Status Message Feedback */}
-          {checkResult && (
-            <div className="mt-4 p-3 rounded-xl bg-white/5 border border-white/10 text-xs text-center text-amber-200 animate-fadeIn">
-              {checkResult}
-            </div>
-          )}
-        </div>
-
-        {/* Footer & Owner Portal Access */}
-        <div className="mt-6 flex items-center justify-between text-xs text-slate-500 px-2">
-          <span>&copy; {new Date().getFullYear()} DevSuite Hub • Powered by UV Tech</span>
-          
-          <Link
-            href="/admin12"
-            className="inline-flex items-center gap-1 text-slate-400 hover:text-amber-400 transition-colors"
-          >
-            <span>Owner Portal</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </Link>
+      {/* Top Header Space */}
+      <div className="relative z-10 w-full pt-8 px-6 flex justify-center">
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/60 border border-amber-500/30 backdrop-blur-md shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500" />
+          </span>
+          <span className="text-xs font-semibold tracking-widest uppercase text-amber-300">
+            System Maintenance
+          </span>
         </div>
       </div>
+
+      {/* Center Spacer allowing full 3D object visibility */}
+      <div className="flex-1 pointer-events-none" />
+
+      {/* Bottom Area: The User's requested Running / Ticker Line */}
+      <div className="relative z-10 w-full pb-10 space-y-6">
+        
+        {/* Clean Center Typography */}
+        <div className="text-center px-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-amber-400 drop-shadow-[0_0_30px_rgba(245,158,11,0.35)]">
+            This site is under maintenance. Soon back.
+          </h1>
+        </div>
+
+        {/* Continuous Running Marquee / Ticker Line */}
+        <div className="w-full overflow-hidden border-y border-amber-500/25 bg-slate-950/70 backdrop-blur-md py-3 shadow-[0_0_25px_rgba(245,158,11,0.15)]">
+          <div className="flex whitespace-nowrap animate-marquee">
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-8 text-xs sm:text-sm font-mono tracking-widest text-amber-300 uppercase px-4 font-semibold"
+              >
+                <span>⚡ THIS SITE IS UNDER MAINTENANCE • SOON BACK</span>
+                <span className="text-cyan-400">✦</span>
+                <span className="text-slate-300">UPGRADING SYSTEM CORE</span>
+                <span className="text-amber-400">✦</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Marquee Animation Style */}
+      <style jsx>{`
+        @keyframes marquee {
+          0% {
+            transform: translateX(0%);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-marquee {
+          display: flex;
+          width: 200%;
+          animation: marquee 18s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }

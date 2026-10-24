@@ -20,6 +20,26 @@ export const OWNER_EMAILS = ["us781819@gmail.com"];
 export const OWNER_CLERK_IDS = ["user_3FxJM7P318YR7fpLom9VufrsUh9"];
 export const ADMIN_SECRET_PASSCODE = "admin12#devtech";
 
+export const ADMIN_CREDENTIALS = [
+  { username: "admin", password: "admin12#devtech" },
+  { username: "admin", password: "admin12" },
+  { username: "vashist", password: "admin12#devtech" },
+  { username: "vashist", password: "admin12" },
+  { username: "us781819@gmail.com", password: "admin12#devtech" },
+  { username: "us781819@gmail.com", password: "admin12" },
+  { username: "devtech", password: "admin12#devtech" },
+  { username: "devtech", password: "admin12" },
+];
+
+export function verifyAdminCredentials(username?: string, password?: string): boolean {
+  if (!username || !password) return false;
+  const u = username.trim().toLowerCase();
+  const p = password.trim();
+  return ADMIN_CREDENTIALS.some(
+    (c) => c.username.toLowerCase() === u && c.password === p
+  );
+}
+
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://lzfksqzuiavlwrnteykt.supabase.co";
 const SERVICE_KEY =
   process.env.SUPABASE_SERVICE_ROLE_KEY ||

@@ -2,6 +2,9 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { auth } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { getMaintenanceState } from "@/lib/maintenance";
 import {
   Layers,
   LayoutGrid,
@@ -22,6 +25,16 @@ import {
 } from "lucide-react";
 
 export default async function HomePage() {
+  const cookieStore = await cookies();
+  const hasBypass = cookieStore.get("devtech_admin_bypass")?.value === "1";
+
+  if (!hasBypass) {
+    const maintenance = await getMaintenanceState();
+    if (maintenance.isMaintenance) {
+      redirect("/maintenance");
+    }
+  }
+
   const { userId } = await auth();
 
   const apps = [

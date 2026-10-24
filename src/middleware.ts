@@ -35,11 +35,11 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   // 2. Check maintenance mode
+  // Only bypass if the explicit bypass cookie is present
   const adminBypass = req.cookies.get("devtech_admin_bypass")?.value;
-  const adminSession = req.cookies.get("devtech_admin_session")?.value;
-  const isAdmin = adminBypass === "1" || adminSession === "authenticated";
+  const hasBypass = adminBypass === "1";
 
-  if (!isAdmin) {
+  if (!hasBypass) {
     try {
       const maintenanceState = await getMaintenanceState();
       if (maintenanceState.isMaintenance) {

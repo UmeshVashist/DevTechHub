@@ -3,8 +3,21 @@ import { AppLauncher } from "@/components/AppLauncher";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Sparkles } from "lucide-react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { getMaintenanceState } from "@/lib/maintenance";
 
 export default async function DashboardPage() {
+  const cookieStore = await cookies();
+  const hasBypass = cookieStore.get("devtech_admin_bypass")?.value === "1";
+
+  if (!hasBypass) {
+    const maintenance = await getMaintenanceState();
+    if (maintenance.isMaintenance) {
+      redirect("/maintenance");
+    }
+  }
+
   const user = await currentUser();
   const firstName =
     user?.firstName ||
