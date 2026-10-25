@@ -24,15 +24,13 @@ import {
   Fingerprint
 } from "lucide-react";
 
-export default async function HomePage() {
-  const cookieStore = await cookies();
-  const hasBypass = cookieStore.get("devtech_admin_bypass")?.value === "1";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-  if (!hasBypass) {
-    const maintenance = await getMaintenanceState();
-    if (maintenance.isMaintenance) {
-      redirect("/maintenance");
-    }
+export default async function HomePage() {
+  const maintenance = await getMaintenanceState();
+  if (maintenance.isMaintenance) {
+    redirect("/maintenance");
   }
 
   const { userId } = await auth();

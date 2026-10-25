@@ -7,15 +7,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getMaintenanceState } from "@/lib/maintenance";
 
-export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const hasBypass = cookieStore.get("devtech_admin_bypass")?.value === "1";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-  if (!hasBypass) {
-    const maintenance = await getMaintenanceState();
-    if (maintenance.isMaintenance) {
-      redirect("/maintenance");
-    }
+export default async function DashboardPage() {
+  const maintenance = await getMaintenanceState();
+  if (maintenance.isMaintenance) {
+    redirect("/maintenance");
   }
 
   const user = await currentUser();

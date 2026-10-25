@@ -35,22 +35,16 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   // 2. Check maintenance mode
-  // Only bypass if the explicit bypass cookie is present
-  const adminBypass = req.cookies.get("devtech_admin_bypass")?.value;
-  const hasBypass = adminBypass === "1";
-
-  if (!hasBypass) {
-    try {
-      const maintenanceState = await getMaintenanceState();
-      if (maintenanceState.isMaintenance) {
-        // Redirect regular visitors to the 3D maintenance screen
-        const url = req.nextUrl.clone();
-        url.pathname = "/maintenance";
-        return NextResponse.redirect(url);
-      }
-    } catch (err) {
-      // Fail-safe: continue if check errors
+  try {
+    const maintenanceState = await getMaintenanceState();
+    if (maintenanceState.isMaintenance) {
+      // Redirect all visitors to the 3D maintenance screen
+      const url = req.nextUrl.clone();
+      url.pathname = "/maintenance";
+      return NextResponse.redirect(url);
     }
+  } catch (err) {
+    // Fail-safe: continue if check errors
   }
 
   // 3. Normal Clerk Authentication routing

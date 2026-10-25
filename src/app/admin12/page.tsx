@@ -13,9 +13,8 @@ import {
   CheckCircle2,
   AlertTriangle,
   Server,
-  Radio,
   X,
-  RefreshCw,
+  FileText,
 } from "lucide-react";
 
 export default function Admin12Page() {
@@ -23,7 +22,6 @@ export default function Admin12Page() {
   const [isMaintenance, setIsMaintenance] = useState(false);
   const [lastUpdated, setLastUpdated] = useState("");
   const [updatedBy, setUpdatedBy] = useState("");
-  const [hasBypass, setHasBypass] = useState(false);
 
   // Modal for Username & Password verification
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -44,7 +42,6 @@ export default function Admin12Page() {
         setIsMaintenance(data.isMaintenance);
         setLastUpdated(data.updatedAt);
         setUpdatedBy(data.updatedBy);
-        setHasBypass(data.hasBypass);
       }
     } catch (e) {
       console.error("Failed to fetch maintenance status:", e);
@@ -81,7 +78,6 @@ export default function Admin12Page() {
           username: usernameInput,
           password: passwordInput,
           isMaintenance: pendingState,
-          setBypass: false, // Don't force bypass so owner can test regular user view easily
         }),
       });
 
@@ -95,8 +91,8 @@ export default function Admin12Page() {
         setFeedback({
           type: "success",
           text: pendingState
-            ? "Maintenance Mode ACTIVATED. All other users visiting https://devtech.cashms.in will now see the 3D Maintenance Screen."
-            : "Website is now LIVE! All other users can access the website normally.",
+            ? "Website turned OFF! All visitors going to https://devtech.cashms.in will now see the 3D Maintenance Screen."
+            : "Website turned ON! All visitors can now access https://devtech.cashms.in normally.",
         });
         loadState();
       } else {
@@ -104,31 +100,6 @@ export default function Admin12Page() {
       }
     } catch (err: any) {
       setAuthError(err?.message || "Network error. Please try again.");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  // Toggle Admin Bypass Cookie (Allows owner to toggle between seeing the live site or seeing the maintenance screen)
-  const handleToggleBypass = async (enable: boolean) => {
-    setIsSaving(true);
-    try {
-      await fetch("/api/maintenance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: enable ? "set_bypass" : "clear_bypass",
-        }),
-      });
-      setHasBypass(enable);
-      setFeedback({
-        type: "success",
-        text: enable
-          ? "Admin Bypass Enabled: Your browser can now view the live site even during maintenance."
-          : "Admin Bypass Cleared: Your browser will now see the Maintenance screen like regular users.",
-      });
-    } catch (e) {
-      console.error(e);
     } finally {
       setIsSaving(false);
     }
@@ -231,14 +202,14 @@ export default function Admin12Page() {
 
               <p className="text-sm text-slate-300 leading-relaxed">
                 {isMaintenance
-                  ? "All other users visiting https://devtech.cashms.in will see the 3D Maintenance Screen ('This site is under maintenance. Soon back.')."
-                  : "All other users have full access to https://devtech.cashms.in without any interruption."}
+                  ? "All visitors to https://devtech.cashms.in are now seeing the 3D Maintenance Screen ('This site is under maintenance. Soon back.'). Click the switch to turn the website back ON."
+                  : "All users have full access to https://devtech.cashms.in. Click the switch to turn the website OFF and display the 3D Maintenance Screen."}
               </p>
 
               <div className="pt-2 text-xs text-slate-400 flex items-center gap-4">
                 <span>Last Updated: <strong className="text-slate-300">{lastUpdated ? new Date(lastUpdated).toLocaleTimeString() : "Just now"}</strong></span>
                 <span>•</span>
-                <span>By: <strong className="text-amber-400">{updatedBy || "Admin"}</strong></span>
+                <span>By: <strong className="text-amber-400">{updatedBy || "admin"}</strong></span>
               </div>
             </div>
 
@@ -290,7 +261,7 @@ export default function Admin12Page() {
               {/* Action Button */}
               <button
                 onClick={() => handleToggleClick(!isMaintenance)}
-                className={`px-5 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-all cursor-pointer ${
                   !isMaintenance
                     ? "bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/40"
                     : "bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/40"
@@ -298,43 +269,6 @@ export default function Admin12Page() {
               >
                 {!isMaintenance ? "Turn OFF (Show Maintenance)" : "Turn ON (Website Working)"}
               </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ADMIN VIEW MODE / BYPASS TESTING CONTROLS */}
-        <section className="backdrop-blur-2xl bg-slate-900/80 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Radio className="w-4 h-4 text-amber-400" />
-                Testing Mode (How You View the Site)
-              </h3>
-              <p className="text-xs text-slate-300 mt-1">
-                {hasBypass
-                  ? "Your browser currently has Admin Bypass active (you can see the normal site even during maintenance)."
-                  : "Your browser currently does NOT have bypass active (you will see the Maintenance Screen just like other users)."}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              {hasBypass ? (
-                <button
-                  onClick={() => handleToggleBypass(false)}
-                  disabled={isSaving}
-                  className="px-4 py-2.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-xs font-bold transition-all cursor-pointer"
-                >
-                  Clear Bypass (View as Normal User)
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleToggleBypass(true)}
-                  disabled={isSaving}
-                  className="px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all cursor-pointer"
-                >
-                  Enable Bypass (View as Admin)
-                </button>
-              )}
             </div>
           </div>
         </section>
@@ -353,7 +287,7 @@ export default function Admin12Page() {
           <div className="p-5 rounded-2xl bg-slate-900/60 border border-white/5 space-y-1.5">
             <div className="text-xs text-slate-400 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Admin Authentication</span>
+              <span>Admin Security</span>
             </div>
             <p className="text-sm font-bold text-white">Password Protected</p>
             <p className="text-[11px] text-slate-500">Username &amp; Password required on every toggle</p>
@@ -387,7 +321,7 @@ export default function Admin12Page() {
             <p className="mt-1 text-xs text-center text-slate-300">
               Please enter your Admin Username and Password to turn website{" "}
               <strong className={pendingState ? "text-amber-400 font-bold" : "text-emerald-400 font-bold"}>
-                {pendingState ? "OFF (Maintenance Screen)" : "ON (Live for All Users)"}
+                {pendingState ? "OFF (Show Maintenance Screen)" : "ON (Website Working)"}
               </strong>
             </p>
 
