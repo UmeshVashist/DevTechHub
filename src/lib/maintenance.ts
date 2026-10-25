@@ -2,14 +2,16 @@
 export interface MaintenanceState {
   isMaintenance: boolean;
   message: string;
-  estimatedTime: string;
+  tickerText: string;
+  estimatedTime?: string;
   updatedAt: string;
   updatedBy: string;
 }
 
 const DEFAULT_STATE: MaintenanceState = {
   isMaintenance: false,
-  message: "We are currently performing scheduled core upgrades to bring you enhanced performance and new features. DevSuite Hub will be back online shortly.",
+  message: "This site is under maintenance. Soon back.",
+  tickerText: "⚡ THIS SITE IS UNDER MAINTENANCE • SOON BACK ✦ UPGRADING SYSTEM CORE ✦",
   estimatedTime: "Under 1 Hour",
   updatedAt: new Date().toISOString(),
   updatedBy: "System",
@@ -76,6 +78,7 @@ export async function getMaintenanceState(): Promise<MaintenanceState> {
           memoryCache = {
             isMaintenance: !!parsed.isMaintenance,
             message: parsed.message || DEFAULT_STATE.message,
+            tickerText: parsed.tickerText || DEFAULT_STATE.tickerText,
             estimatedTime: parsed.estimatedTime || DEFAULT_STATE.estimatedTime,
             updatedAt: parsed.updatedAt || data[0].updated_at || new Date().toISOString(),
             updatedBy: parsed.updatedBy || "Admin",
@@ -101,11 +104,13 @@ export async function setMaintenanceState(
   isMaintenance: boolean,
   message?: string,
   estimatedTime?: string,
-  updatedBy: string = "Owner"
+  updatedBy: string = "Owner",
+  tickerText?: string
 ): Promise<MaintenanceState> {
   const newState: MaintenanceState = {
     isMaintenance,
     message: message || memoryCache.message || DEFAULT_STATE.message,
+    tickerText: tickerText || memoryCache.tickerText || DEFAULT_STATE.tickerText,
     estimatedTime: estimatedTime || memoryCache.estimatedTime || DEFAULT_STATE.estimatedTime,
     updatedAt: new Date().toISOString(),
     updatedBy,

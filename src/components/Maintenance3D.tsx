@@ -6,12 +6,21 @@ import * as THREE from "three";
 
 interface Maintenance3DProps {
   initialMessage?: string;
+  initialTickerText?: string;
   initialEstimatedTime?: string;
 }
 
-export function Maintenance3D(_props?: Maintenance3DProps) {
+export function Maintenance3D(props?: Maintenance3DProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const [headline, setHeadline] = React.useState(
+    props?.initialMessage || "This site is under maintenance. Soon back."
+  );
+  const [tickerText, setTickerText] = React.useState(
+    props?.initialTickerText ||
+      "⚡ THIS SITE IS UNDER MAINTENANCE • SOON BACK ✦ UPGRADING SYSTEM CORE ✦"
+  );
 
   // Three.js 3D Interactive Scene
   useEffect(() => {
@@ -212,6 +221,13 @@ export function Maintenance3D(_props?: Maintenance3DProps) {
           if (data.isMaintenance === false) {
             router.push("/");
             router.refresh();
+          } else {
+            if (data.message) {
+              setHeadline(data.message);
+            }
+            if (data.tickerText) {
+              setTickerText(data.tickerText);
+            }
           }
         }
       } catch {}
@@ -250,9 +266,9 @@ export function Maintenance3D(_props?: Maintenance3DProps) {
       <div className="relative z-10 w-full pb-10 space-y-6">
         
         {/* Clean Center Typography */}
-        <div className="text-center px-4">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-amber-400 drop-shadow-[0_0_30px_rgba(245,158,11,0.35)]">
-            This site is under maintenance. Soon back.
+        <div className="text-center px-4 max-w-4xl mx-auto">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-amber-400 drop-shadow-[0_0_30px_rgba(245,158,11,0.35)] leading-tight">
+            {headline}
           </h1>
         </div>
 
@@ -262,12 +278,10 @@ export function Maintenance3D(_props?: Maintenance3DProps) {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="flex items-center gap-8 text-xs sm:text-sm font-mono tracking-widest text-amber-300 uppercase px-4 font-semibold"
+                className="flex items-center gap-8 text-xs sm:text-sm font-mono tracking-widest text-amber-300 uppercase px-6 font-semibold"
               >
-                <span>⚡ THIS SITE IS UNDER MAINTENANCE • SOON BACK</span>
+                <span>{tickerText}</span>
                 <span className="text-cyan-400">✦</span>
-                <span className="text-slate-300">UPGRADING SYSTEM CORE</span>
-                <span className="text-amber-400">✦</span>
               </div>
             ))}
           </div>

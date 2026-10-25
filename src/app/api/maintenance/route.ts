@@ -32,7 +32,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { username, password, isMaintenance, message, estimatedTime } = body;
+    const { username, password, isMaintenance, message, estimatedTime, tickerText } = body;
 
     // Strict verification of Admin Username and Password
     if (!verifyAdminCredentials(username, password)) {
@@ -45,11 +45,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const currentState = await getMaintenanceState();
+    const targetIsMaintenance =
+      isMaintenance !== undefined ? Boolean(isMaintenance) : currentState.isMaintenance;
+    const targetMessage =
+      message !== undefined && message !== "" ? String(message).trim() : currentState.message;
+    const targetTicker =
+      tickerText !== undefined && tickerText !== "" ? String(tickerText).trim() : currentState.tickerText;
+    const targetEstimatedTime =
+      estimatedTime !== undefined ? String(estimatedTime).trim() : currentState.estimatedTime;
+
     const updated = await setMaintenanceState(
-      Boolean(isMaintenance),
-      message,
-      estimatedTime,
-      username || "Admin"
+      targetIsMaintenance,
+      targetMessage,
+      targetEstimatedTime,
+      username || "Admin",
+      targetTicker
     );
 
     const response = NextResponse.json({
