@@ -4,7 +4,12 @@ import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
 
-export function Maintenance3D() {
+interface Maintenance3DProps {
+  initialMessage?: string;
+  initialEstimatedTime?: string;
+}
+
+export function Maintenance3D(_props?: Maintenance3DProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 

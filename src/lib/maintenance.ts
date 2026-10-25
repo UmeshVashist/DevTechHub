@@ -18,17 +18,13 @@ const DEFAULT_STATE: MaintenanceState = {
 // Owner identifiers
 export const OWNER_EMAILS = ["us781819@gmail.com"];
 export const OWNER_CLERK_IDS = ["user_3FxJM7P318YR7fpLom9VufrsUh9"];
-export const ADMIN_SECRET_PASSCODE = "admin12#devtech";
+export const ADMIN_SECRET_PASSCODE = "Umesh@1212";
 
 export const ADMIN_CREDENTIALS = [
-  { username: "admin", password: "admin12#devtech" },
-  { username: "admin", password: "admin12" },
-  { username: "vashist", password: "admin12#devtech" },
-  { username: "vashist", password: "admin12" },
-  { username: "us781819@gmail.com", password: "admin12#devtech" },
-  { username: "us781819@gmail.com", password: "admin12" },
-  { username: "devtech", password: "admin12#devtech" },
-  { username: "devtech", password: "admin12" },
+  { username: "admin", password: "Umesh@1212" },
+  { username: "vashist", password: "Umesh@1212" },
+  { username: "us781819@gmail.com", password: "Umesh@1212" },
+  { username: "devtech", password: "Umesh@1212" },
 ];
 
 export function verifyAdminCredentials(username?: string, password?: string): boolean {
